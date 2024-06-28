@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const appointmentService = require('./services/AppointmentService.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -19,6 +20,24 @@ app.get('/', (req, res) => {
 
 app.get("/cadastro", (req, res) => {
     res.render("create");
+});
+
+app.post("/create",async (req,res) => {
+    var status = await appointmentService.Create(
+        req.body.name,
+        req.body.email,
+        req.body.description,
+        req.body.cpf,
+        req.body.date,
+        req.body.time
+    );
+
+    if(status){
+        res.redirect("/");
+    }else{
+        res.send("deu ruim");
+    
+    }
 });
 
 app.listen(8080, () => {
