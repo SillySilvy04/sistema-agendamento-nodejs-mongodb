@@ -36,8 +36,12 @@ app.post("/create",async (req,res) => {
         res.redirect("/");
     }else{
         res.send("deu ruim");
-    
     }
+});
+
+app.get("/getcalendar", async (req,res) => {
+    var consultas = await appointmentService.GetAll(false);
+    res.json(consultas);
 });
 
 app.listen(8080, () => {
