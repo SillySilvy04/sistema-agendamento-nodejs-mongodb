@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 mongoose.connect('mongodb://localhost:27017/agendamentos', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.get('/', (req, res) => {
-    res.send("eai");
+    res.render('index');
 });
 
 app.get("/cadastro", (req, res) => {
