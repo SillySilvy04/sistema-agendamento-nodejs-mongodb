@@ -14,7 +14,11 @@ mongoose.connect('mongodb://localhost:27017/agendamentos', { useNewUrlParser: tr
 
 app.get('/', (req, res) => {
     res.send("eai");
-})
+});
+
+app.get("/cadastro", (req, res) => {
+    res.render("create");
+});
 
 app.listen(8080, () => {
     console.log('rodo');
