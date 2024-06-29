@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const appointmentService = require('./services/AppointmentService.js');
+const AppointmentService = require('./services/AppointmentService.js');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -22,7 +23,7 @@ app.get("/cadastro", (req, res) => {
     res.render("create");
 });
 
-app.post("/create",async (req,res) => {
+app.post("/create", async (req, res) => {
     var status = await appointmentService.Create(
         req.body.name,
         req.body.email,
@@ -32,17 +33,31 @@ app.post("/create",async (req,res) => {
         req.body.time
     );
 
-    if(status){
+    if (status) {
         res.redirect("/");
-    }else{
+    } else {
         res.send("deu ruim");
     }
 });
 
-app.get("/getcalendar", async (req,res) => {
+app.get("/getcalendar", async (req, res) => {
     console.log("getcalendar");
     var appointments = await appointmentService.GetAll(false);
     res.json(appointments);
+});
+
+app.get("/event/:id", async (req, res) => {
+    var appointment;
+    try {
+        appointment = await AppointmentService.GetById(req.params.id);
+        if (appointment === undefined) {
+            return res.status(404).redirect("/");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(505).redirect("/");
+    }
+    res.render("event", {appo: appointment});
 });
 
 app.listen(8080, () => {
