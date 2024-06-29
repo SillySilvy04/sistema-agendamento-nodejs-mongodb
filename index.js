@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');
 
-mongoose.connect('mongodb://localhost:27017/agendamentos', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/agendamentos');
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -74,6 +74,23 @@ app.post("/finish", async (req, res) => {
         res.send("deu ruim");
     }
 });
+
+app.get("/list", async (req, res) => {
+
+    //await AppointmentService.Search("aaaaaa@345.com");
+
+    var appointments = await AppointmentService.GetAll(true);
+    res.render("list", {appos: appointments});
+});
+
+app.get("/search_result", async (req, res) => {
+    var appos = await AppointmentService.Search(req.query.search);
+    res.render("list", {appos: appos});
+});
+
+setInterval(async () => {
+    await AppointmentService.SendNotification();
+},5000)
 
 app.listen(8080, () => {
     console.log('rodo');

@@ -13,7 +13,8 @@ class AppointmentService{
             cpf,
             date,
             time,
-            finished: false
+            finished: false,
+            notified: false
         });
         try{
             await newAppo.save();
@@ -58,6 +59,21 @@ class AppointmentService{
             console.log(err);
             return false;
         }
+    }
+
+    async Search(query){
+        try {
+            var appos = await Appo.find().or([{email: query}, {cpf: query}]);
+            return appos;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
+    async SendNotification(){
+        var appos = await this.GetAll(false);
+        console.log(appos);
     }
 }
 
