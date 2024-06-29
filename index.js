@@ -42,7 +42,6 @@ app.post("/create", async (req, res) => {
 });
 
 app.get("/getcalendar", async (req, res) => {
-    console.log("getcalendar");
     var appointments = await appointmentService.GetAll(false);
     res.json(appointments);
 });
@@ -90,7 +89,7 @@ app.get("/search_result", async (req, res) => {
 
 setInterval(async () => {
     await AppointmentService.SendNotification();
-},5000)
+},1000*60*6);
 
 app.listen(8080, () => {
     console.log('rodo');
