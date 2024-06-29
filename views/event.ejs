@@ -13,7 +13,10 @@
     <h4>CPF: <%= appo.cpf %></h4>
     <hr>
     <% if(!appo.finisehd){ %>
-        <button>Finalizar Consulta</button>
+        <form action="/finish" method="POST">
+            <input type="hidden" name="id" id="" value="<%= appo._id %>">
+            <button>Finalizar Consulta</button>
+        </form>
     <% } %>
 </body>
 </html>

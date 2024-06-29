@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const appointmentService = require('./services/AppointmentService.js');
 const AppointmentService = require('./services/AppointmentService.js');
+const { stat } = require('fs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -58,6 +59,20 @@ app.get("/event/:id", async (req, res) => {
         res.status(505).redirect("/");
     }
     res.render("event", {appo: appointment});
+});
+
+app.post("/finish", async (req, res) => {
+    var id = req.body.id;
+    var status = await AppointmentService.Finish(id);
+    if(!status){
+        res.status(404).redirect("/");
+    }
+
+    if (status) {
+        res.redirect("/");
+    } else {
+        res.send("deu ruim");
+    }
 });
 
 app.listen(8080, () => {
